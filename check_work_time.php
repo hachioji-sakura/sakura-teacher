@@ -910,6 +910,7 @@ if ($date_list_string != '()') {
 				foreach ($event_list as $key=>$event) {
 					if ($event['date']==$date0 && $event['time']==$time1 && $event['member_no']==$schedule['member_no']) {
 						$event_list[$key]['cal_evt_summary'] .= ':'.$attendStatusCal[$date0][$time1][$member_list[$schedule['member_no']]['name']];
+						$event_list[$key]['place'] = $item['place'];
 					}
 				}
 			}
@@ -959,6 +960,12 @@ if ($date_list_string != '()') {
 				$event['time'] = $time_str;
 				$event['diff_hours'] = count($season_exercise[$event['date1']]) * 0.5;
 				$event["cal_evt_summary"] = "{$event['course_name']}:{$event['lesson_name']}:{$event['subject_name']}:{$event['name']}";
+				foreach ($event_list as $event0) {
+					if ($event0['date']==$date0 && $event0['place']) {
+						$event['place'] = $event0['place'];
+						break;
+					}
+				}
 				$event_list[] = $event;
 			}
 		}
@@ -1003,6 +1010,12 @@ if ($date_list_string != '()') {
 			$event['time'] = $time_str;
 			$event['diff_hours'] = count($season_exercise[$event['date1']]) * 0.5;
 			$event["cal_evt_summary"] = "{$event['course_name']}:{$event['lesson_name']}:{$event['subject_name']}:{$event['name']}";
+			foreach ($event_list as $event0) {
+				if ($event0['date']==$date0 && $event0['place']) {
+					$event['place'] = $event0['place'];
+					break;
+				}
+			}
 			$event_list[] = $event;
 		}
 	}
@@ -1113,8 +1126,11 @@ while ($event) {
 			str_replace(array('月','日'),array('/',''),$event["date"])."$DOW</td>";
 		echo $date_cell;
 	}
-	$place_name = ($event['lesson_id']!=2)?$place_list[$event['place_id']]['name']: 
-		mb_substr($event["cal_summary"],mb_strpos($event["cal_summary"],'_')+1);
+	if ($event['course_id'] != $season_course_id)
+		$place_name = ($event['lesson_id']!=2)?$place_list[$event['place_id']]['name']: 
+			mb_substr($event["cal_summary"],mb_strpos($event["cal_summary"],'_')+1);
+	else
+		$place_name = str_replace('校舎','校',str_replace('八王子','',$event['place']));
 ?>
 	<td align="left" style="padding: 0px 10px 0px 10px;"><?= $event["time"] ?></td>
 	<td align="left" style="padding: 0px 10px 0px 10px;"><?= sprintf( "%4.2f", $diff_hours ) ?></td>
