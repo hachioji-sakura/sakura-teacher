@@ -772,35 +772,35 @@ foreach ($event_list as &$event) {
 			if (!$ret) { continue; }
 			if (str_replace(' ','',$name) != str_replace(' ','',$name_cal[1])) { continue; }
 			$event['eng_name'] = $name_cal[2];
-			if (preg_match('/^休み[1１]\s*:/u',$block)) { $attendStatusCal[$event['date']][$event['time']][$name] = '休み１'; }
-			if (preg_match('/^休み[2２]\s*:/u',$block)) { $attendStatusCal[$event['date']][$event['time']][$name] = '休み２'; }
-			if (preg_match('/^振替\s*:/u',$block))      { $attendStatusCal[$event['date']][$event['time']][$name] = '振替'; }
-			if (preg_match('/:\s*当日/u',$block))      { $attendStatusCal[$event['date']][$event['time']][$name] .= '当日'; }
-			if (preg_match('/:\s*休講/u',$block))      { $attendStatusCal[$event['date']][$event['time']][$name] .= '休講'; }
+			if (preg_match('/^休み[1１]\s*:/u',$block)) { $attendStatusCal[$event['date']][$event['time']][$name] = STR_YASUMI1; }
+			if (preg_match('/^休み[2２]\s*:/u',$block)) { $attendStatusCal[$event['date']][$event['time']][$name] = STR_YASUMI2; }
+			if (preg_match('/^振替\s*:/u',$block))      { $attendStatusCal[$event['date']][$event['time']][$name] = STR_FURIKAE; }
+			if (preg_match('/:\s*当日/u',$block))      { $attendStatusCal[$event['date']][$event['time']][$name] .= STR_TOUJITSU; }
+			if (preg_match('/:\s*休講/u',$block))      { $attendStatusCal[$event['date']][$event['time']][$name] .= STR_KYUUKOU; }
 			if (preg_match('/^absent1\s*:/iu',$block))  { $attendStatusCal[$event['date']][$event['time']][$name] = 'Absent1'; }
 			if (preg_match('/^absent2\s*:/iu',$block))  { $attendStatusCal[$event['date']][$event['time']][$name] = 'Absent2'; }
 			if (preg_match('/^alternative\s*:/iu',$block)) { $attendStatusCal[$event['date']][$event['time']][$name] = 'make-up'; }
 			if (preg_match('/^make.?up\s*:/iu',$block)) { $attendStatusCal[$event['date']][$event['time']][$name] = 'make-up'; }
 			if (preg_match('/:\s*today/iu',$block))    { $attendStatusCal[$event['date']][$event['time']][$name] .= ' Today'; }
 			if (preg_match('/:\s*No.*class/iu',$block)) { $attendStatusCal[$event['date']][$event['time']][$name] .= ' No class'; }
-			if (preg_match('/:\s*規定回数以上/u',$block))    { $attendStatusCal[$event['date']][$event['time']][$name] .= '規定回数以上'; }
+			if (preg_match('/:\s*規定回数以上/u',$block))    { $attendStatusCal[$event['date']][$event['time']][$name] .= STR_OVERLIMIT; }
 			if (preg_match('/:\s*over.*?limit/iu',$block))    { $attendStatusCal[$event['date']][$event['time']][$name] .= ' over limit'; }
 		}
 	} else {
 		$allPreFix = '';
-		if (preg_match('/^休み[1１]\s*:/u',$blocks[1][0])) { $allPreFix = '休み１'; }
-		if (preg_match('/^休み[2２]\s*:/u',$blocks[1][0])) { $allPreFix = '休み２'; }
-		if (preg_match('/^振替\s*:/u',$blocks[1][0]))     { $allPreFix = '振替'; }
+		if (preg_match('/^休み[1１]\s*:/u',$blocks[1][0])) { $allPreFix = STR_YASUMI1; }
+		if (preg_match('/^休み[2２]\s*:/u',$blocks[1][0])) { $allPreFix = STR_YASUMI2; }
+		if (preg_match('/^振替\s*:/u',$blocks[1][0]))     { $allPreFix = STR_FURIKAE; }
 		if (preg_match('/^absent1\s*:/iu',$blocks[1][0]))     { $allPreFix = 'Absent1'; }
 		if (preg_match('/^absent2\s*:/iu',$blocks[1][0]))     { $allPreFix = 'Absent2'; }
 		if (preg_match('/^alternative\s*:/iu',$blocks[1][0])) { $allPreFix = 'make-up'; }
 		if (preg_match('/^make.?up\s*:/iu',$blocks[1][0]))    { $allPreFix = 'make-up'; }
 		$allPostFix = '';
-		if (preg_match('/ 様 .*:\s*当日/u',$blocks[1][0])) { $allPostFix = '当日'; }
-		if (preg_match('/ 様 .*:\s*休講/u',$blocks[1][0])) { $allPostFix = '休講'; }
+		if (preg_match('/ 様 .*:\s*当日/u',$blocks[1][0])) { $allPostFix = STR_TOUJITSU; }
+		if (preg_match('/ 様 .*:\s*休講/u',$blocks[1][0])) { $allPostFix = STR_KYUUKOU; }
 		if (preg_match('/ 様 .*:\s*today/iu',$blocks[1][0])) { $allPostFix = ' Today'; }
 		if (preg_match('/ 様 .*:\s*No.*class/iu',$blocks[1][0])) { $allPostFix = ' No class'; }
-		if (preg_match('/ 様 .*:\s*規定回数以上/u',$blocks[1][0])) { $allPostFix = '規定回数以上'; }
+		if (preg_match('/ 様 .*:\s*規定回数以上/u',$blocks[1][0])) { $allPostFix = STR_OVERLIMIT; }
 		if (preg_match('/ 様 .*:\s*over.*?limit/iu',$blocks[1][0])) { $allPostFix = ' over limit'; }
 		$str0 = $blocks[1][0];
 		$ret = preg_match_all('/(\S+)/u', $str0, $blocks);
@@ -821,19 +821,19 @@ foreach ($event_list as &$event) {
 					$name0 = $family_name.' '.$name0;
 					$attendStatusCal[$event['date']][$event['time']][$name0] = '';
 					if ($allPreFix) { $attendStatusCal[$event['date']][$event['time']][$name0] = $allPreFix; }
-					else if (preg_match('/^休み[1１]\s*:/u',$block)) { $attendStatusCal[$event['date']][$event['time']][$name0] = '休み１'; }
-					else if (preg_match('/^休み[2２]\s*:/u',$block)) { $attendStatusCal[$event['date']][$event['time']][$name0] = '休み２'; }
-					else if (preg_match('/^振替\s*:/u',$block))     { $attendStatusCal[$event['date']][$event['time']][$name0] = '振替'; }
+					else if (preg_match('/^休み[1１]\s*:/u',$block)) { $attendStatusCal[$event['date']][$event['time']][$name0] = STR_YASUMI1; }
+					else if (preg_match('/^休み[2２]\s*:/u',$block)) { $attendStatusCal[$event['date']][$event['time']][$name0] = STR_YASUMI2; }
+					else if (preg_match('/^振替\s*:/u',$block))     { $attendStatusCal[$event['date']][$event['time']][$name0] = STR_FURIKAE; }
 					else if (preg_match('/^absent1\s*:/iu',$block))  { $attendStatusCal[$event['date']][$event['time']][$name0] = 'Absent1'; }
 					else if (preg_match('/^absent2\s*:/iu',$block))  { $attendStatusCal[$event['date']][$event['time']][$name0] = 'Absent2'; }
 					else if (preg_match('/^alternative\s*:/iu',$block)) { $attendStatusCal[$event['date']][$event['time']][$name0] = 'make-up'; }
 					else if (preg_match('/^make.?up\s*:/iu',$block)) { $attendStatusCal[$event['date']][$event['time']][$name0] = 'make-up'; }
 					if ($allPostFix) { $attendStatusCal[$event['date']][$event['time']][$name0] .= $allPostFix; }
-					else if (preg_match('/:\s*当日/u',$block))      { $attendStatusCal[$event['date']][$event['time']][$name0] .= '当日'; }
-					else if (preg_match('/:\s*休講/u',$block))      { $attendStatusCal[$event['date']][$event['time']][$name0] .= '休講'; }
+					else if (preg_match('/:\s*当日/u',$block))      { $attendStatusCal[$event['date']][$event['time']][$name0] .= STR_TOUJITSU; }
+					else if (preg_match('/:\s*休講/u',$block))      { $attendStatusCal[$event['date']][$event['time']][$name0] .= STR_KYUUKOU; }
 					else if (preg_match('/:\s*today/iu',$block))    { $attendStatusCal[$event['date']][$event['time']][$name0] .= ' Today'; }
 					else if (preg_match('/:\s*No.*class/iu',$block)) { $attendStatusCal[$event['date']][$event['time']][$name0] .= ' No class'; }
-					else if (preg_match('/:\s*規定回数以上/u',$block)) { $attendStatusCal[$event['date']][$event['time']][$name0] .= '規定回数以上'; }
+					else if (preg_match('/:\s*規定回数以上/u',$block)) { $attendStatusCal[$event['date']][$event['time']][$name0] .= STR_OVERLIMIT; }
 					else if (preg_match('/:\s*over.*?limit/iu',$block)) { $attendStatusCal[$event['date']][$event['time']][$name0] .= ' over limit'; }
 				}
 			} else {
@@ -1221,9 +1221,12 @@ while ($event) {
 			}
 		}
 		
-		$lastdate=$event["date"]; $lasttime=$event["time"]; $last_cal_evt_summary = $event["cal_evt_summary"];
+		$lastdate=$event["date"]; $lasttime=$event["time"]; 
+		$last_teacher_id =$event["teacher_id"]; 
 		$next_event = next($event_list);
-	} while (($next_event) && ($next_event["date"] == $lastdate) && ($next_event["time"] == $lasttime) && ($next_event["cal_evt_summary"] == $last_cal_evt_summary));
+//	} while (($next_event) && ($next_event["date"] == $lastdate) && ($next_event["time"] == $lasttime) && ($next_event["cal_evt_summary"] == $last_cal_evt_summary));
+	} while (($next_event) && ($next_event["date"] == $lastdate) && ($next_event["time"] == $lasttime) 
+	 && ($next_event["teacher_id"] == $last_teacher_id) && $event["course_id"] != 1 );
 	if ($event['course_id'] == 2 && $member_count == 0) { $member_count = 1; }
 ?>
 		<td align="left" style="padding: 0px 10px 0px 10px;"><?= $nameCol ?></td>
