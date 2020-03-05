@@ -3,7 +3,7 @@ ini_set( 'display_errors', 0 );
 require_once(dirname(__FILE__)."/../sakura/schedule/const/const.inc");
 require_once(dirname(__FILE__)."/../sakura/schedule/func.inc");
 ini_set('include_path', CLIENT_LIBRALY_PATH);
-require_once "Google/autoload.php";
+//require_once "Google/autoload.php";
 set_time_limit(60);
 
 if (!$teacher_acount)	$mode = $_GET['mode'];
