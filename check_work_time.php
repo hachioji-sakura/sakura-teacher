@@ -292,9 +292,9 @@ $target_teacher_id = $teacher_id;
 $tid = $teacher_id;
 $kari_ignore = '1';
 
-require_once dirname(__FILE__)."/../sakura/schedule/get_calender_data.inc";
-require_once dirname(__FILE__)."/../sakura/schedule/edit_calender_data.inc";
-require_once dirname(__FILE__)."/../sakura/schedule/check_calender_data.inc";
+//require_once dirname(__FILE__)."/../sakura/schedule/get_calender_data.inc";
+//require_once dirname(__FILE__)."/../sakura/schedule/edit_calender_data.inc";
+//require_once dirname(__FILE__)."/../sakura/schedule/check_calender_data.inc";
 
 $teacher_id = $target_teacher_id;
 }
