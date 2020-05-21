@@ -336,12 +336,14 @@ if ($teacher['lesson_id'] != 2
 	define(STR_YASUMI1,                '休み１');
 	define(STR_YASUMI2,                '休み２');
 	define(STR_CALENDAR_ERROR,         'カレンダー登録エラー');
+	define(STR_CALENDAR_WARNING,       'カレンダー登録警告');
 	define(STR_CALENDAR_NAME,          'カレンダー名');
 	define(STR_DATE,                   '日付');
 	define(STR_START_TIME,             '開始時間');
 	define(STR_END_TIME,               '終了時間');
 	define(STR_TITLE,                  'タイトル');
 	define(STR_ERROR,                  'エラー');
+	define(STR_WARNING,                '警告');
 	define(STR_PAYMENT_DISPLAY_SWITCH, '給与表示ON/OFF');
 	define(STR_LOGOUT,                 'ログアウト');
 	define(STR_TIME,                   '時刻');
@@ -386,12 +388,14 @@ if ($teacher['lesson_id'] != 2
 	define(STR_YASUMI1,                'Absent1');
 	define(STR_YASUMI2,                'Absent2');
 	define(STR_CALENDAR_ERROR,         'Calendar error');
+	define(STR_CALENDAR_WARNING,       'Calendar warning');
 	define(STR_CALENDAR_NAME,          'Calendar name');
 	define(STR_DATE,                   'date');
 	define(STR_START_TIME,             'Start time');
 	define(STR_END_TIME,               'End time');
 	define(STR_TITLE,                  'Title');
 	define(STR_ERROR,                  'Error');
+	define(STR_WARNING,                  'Warning');
 	define(STR_PAYMENT_DISPLAY_SWITCH, 'Payment display ON/OFF');
 	define(STR_LOGOUT,                 'Logout');
 	define(STR_TIME,                   'Time');
@@ -701,10 +705,49 @@ if (count($errArray) > 0) {
 <?php
 	}
 ?>
-</table>
+</table><br>
 <?php
 $errArray=array();
 }
+
+if (count($warning_Array) > 0) {
+?>
+	<?= STR_CALENDAR_WARNING ?><br>
+<table border="1">
+	<tr>
+		<th><?= STR_CALENDAR_NAME ?></th><th><?= STR_DATE ?></th><th><?= STR_START_TIME ?></th><th><?= STR_END_TIME ?></th><th><?= STR_TITLE ?></th><th><?= STR_WARNING ?></th>
+	</tr>
+<?php
+	foreach ($warning_Array as $error) {
+?>
+	<tr>
+		<td>
+			<?= $error["calender_summary"]?>
+		</td>
+		<td>
+			<?= $error["date"]?>
+		</td>
+		<td>
+			<?= $error["start_time"]?>
+		</td>
+		<td>
+			<?= $error["end_time"]?>
+		</td>
+		<td>
+			<?= $error["summary"]?>
+		</td>
+		<td>
+			<?= $error["message"]?>
+		</td>
+	</tr>
+<?php
+	}
+?>
+</table><br>
+<?php
+$warning_Array=array();
+}
+
 } // mode != 'transport'
 
 $sql = "SELECT e.cal_summary, e.cal_evt_summary, e.cal_id, e.course_id, e.event_end_timestamp, e.event_start_timestamp, ".
@@ -1254,7 +1297,8 @@ while ($event) {
 			} else {
 				$grade = $event['grade'];
 				if ($grade) {
-					if ($year==date('Y') && date('n') >= 4 && $month < 4 && $grade > 1) { $grade--; }
+					if ($year==date('Y') && date('n') > 4 && $month < 4 && $grade > 1) { $grade--; }
+//					if ($year==date('Y') && date('n') == 4 && $month >= 4 && $grade > 1 && $grade < 14) { $grade++; }
 				}
 			}
 			if ($grade) {
@@ -1369,6 +1413,7 @@ while ($event) {
 		if ($mode!='check')	{ $html_str = ob_get_contents(); ob_end_clean(); }
 		$transport_cost = 0;
 		if ($attendPlaceList) {
+			$DOW = '';
 			if ($teacher['transport_DOW']) {
 				if (strpos($teacher["transport_DOW"], date('w',$event['event_start_timestamp'])) !== false)
 					$transport_cost = $teacher['transport_cost'];
@@ -1377,7 +1422,7 @@ while ($event) {
 				$transport_cost = $teacher['transport_dcost1'][$DOW];
 			}
 			$str0 = implode(',',array_diff(array_unique($attendPlaceList), array('')));
-			$transport_cell = "<td name=\"pay\" align=\"right\" rowspan=\"$rowspan0\">$transport_cost</td>";
+			$transport_cell = "<td name=\"trnsd{$DOW}[]\" align=\"right\" rowspan=\"$rowspan0\">$transport_cost</td>";
 		} else {
 			$str0 = "";
 			$transport_cell = "<td name=\"pay\" rowspan=\"$rowspan0\"></td>";
