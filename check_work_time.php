@@ -854,6 +854,8 @@ $rslt = $stmt->fetchAll(PDO::FETCH_ASSOC);
 foreach ($rslt as $item) {
 	$attendStatus[$item['date']][$item['time']][$item['name']] = $item['presence'];
 }
+
+/*
 // 期間講習追加
 $season_exercise = array();
 if ($date_list_string != '()') {
@@ -1020,6 +1022,7 @@ if ($date_list_string != '()') {
 		}
 	}
 }
+*/
 
 $lesson_array = array();
 foreach ($event_list as $key => $value) {
