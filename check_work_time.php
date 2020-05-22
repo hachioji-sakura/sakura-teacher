@@ -778,10 +778,20 @@ foreach ($event_list as &$event) {
 				}
 			}
 			// タイプ
+			$event_date = date("Y/m/d", $event['event_start_timestamp']);
 			if ($event["course_id"] == "0") {
 				$course_name = "";
+				if ($event["subject_id"] == "0") {
+					if (!in_array($event_date , $sat_sun_class_date_list))
+						$course_name = $course_list[$season_course_id]['course_name'];
+					else
+						$course_name = $course_list[9]['course_name'];
+				}					
 			} else {
 				$course_name = $course_list[$event["course_id"]]["course_name"];
+				if ($event["course_id"] == "9" && !in_array($event_date , $sat_sun_class_date_list)) {
+						$course_name = $course_list[$season_course_id]['course_name'];
+				}
 			}
 
 	$event["course_name"]  = $course_name;
@@ -791,7 +801,7 @@ foreach ($event_list as &$event) {
 	foreach ($work_type_list as $key=>$work_type) {
 		if (!$work_type) { continue; }
 		if (strpos($event['cal_evt_summary'], $work_type)!==false) {
-			$event["course_name"]  = '';
+//			$event["course_name"]  = '';
 			$event["lesson_name"]  = $lesson_name;
 			$event["subject_name"] = $work_type;
 			$event["work_type"]    = $key;
