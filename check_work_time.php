@@ -358,7 +358,7 @@ if ($teacher['lesson_id'] != 2
 	define(STR_PAYMENT,                '給与');
 	define(STR_COMMENT1,               '＊赤字はお休みの生徒です。');
 	define(STR_COMMENT2,               '＊青字は体験生徒です。');
-	define(STR_COMMENT3,               '＊背景淡緑色は毎週繰り返し予定でないスポットの授業です。');
+	define(STR_COMMENT3,               '＊背景淡緑色は振替の授業です。');
 	define(STR_COMMENT4,               '＊時給未設定の項目については、支給時までに確定します。');
 	define(STR_GOTO_MENU,              'メニューへ戻る');
 	define(STR_PLACE,                  '校舎');
