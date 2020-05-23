@@ -292,9 +292,9 @@ $target_teacher_id = $teacher_id;
 $tid = $teacher_id;
 $kari_ignore = '1';
 
-require_once dirname(__FILE__)."/../sakura/schedule/get_calender_data.inc";
-require_once dirname(__FILE__)."/../sakura/schedule/edit_calender_data.inc";
-require_once dirname(__FILE__)."/../sakura/schedule/check_calender_data.inc";
+//require_once dirname(__FILE__)."/../sakura/schedule/get_calender_data.inc";
+//require_once dirname(__FILE__)."/../sakura/schedule/edit_calender_data.inc";
+//require_once dirname(__FILE__)."/../sakura/schedule/check_calender_data.inc";
 
 $teacher_id = $target_teacher_id;
 }
@@ -336,14 +336,12 @@ if ($teacher['lesson_id'] != 2
 	define(STR_YASUMI1,                '休み１');
 	define(STR_YASUMI2,                '休み２');
 	define(STR_CALENDAR_ERROR,         'カレンダー登録エラー');
-	define(STR_CALENDAR_WARNING,       'カレンダー登録警告');
 	define(STR_CALENDAR_NAME,          'カレンダー名');
 	define(STR_DATE,                   '日付');
 	define(STR_START_TIME,             '開始時間');
 	define(STR_END_TIME,               '終了時間');
 	define(STR_TITLE,                  'タイトル');
 	define(STR_ERROR,                  'エラー');
-	define(STR_WARNING,                '警告');
 	define(STR_PAYMENT_DISPLAY_SWITCH, '給与表示ON/OFF');
 	define(STR_LOGOUT,                 'ログアウト');
 	define(STR_TIME,                   '時刻');
@@ -388,14 +386,12 @@ if ($teacher['lesson_id'] != 2
 	define(STR_YASUMI1,                'Absent1');
 	define(STR_YASUMI2,                'Absent2');
 	define(STR_CALENDAR_ERROR,         'Calendar error');
-	define(STR_CALENDAR_WARNING,       'Calendar warning');
 	define(STR_CALENDAR_NAME,          'Calendar name');
 	define(STR_DATE,                   'date');
 	define(STR_START_TIME,             'Start time');
 	define(STR_END_TIME,               'End time');
 	define(STR_TITLE,                  'Title');
 	define(STR_ERROR,                  'Error');
-	define(STR_WARNING,                  'Warning');
 	define(STR_PAYMENT_DISPLAY_SWITCH, 'Payment display ON/OFF');
 	define(STR_LOGOUT,                 'Logout');
 	define(STR_TIME,                   'Time');
@@ -705,49 +701,10 @@ if (count($errArray) > 0) {
 <?php
 	}
 ?>
-</table><br>
+</table>
 <?php
 $errArray=array();
 }
-
-if (count($warning_Array) > 0) {
-?>
-	<?= STR_CALENDAR_WARNING ?><br>
-<table border="1">
-	<tr>
-		<th><?= STR_CALENDAR_NAME ?></th><th><?= STR_DATE ?></th><th><?= STR_START_TIME ?></th><th><?= STR_END_TIME ?></th><th><?= STR_TITLE ?></th><th><?= STR_WARNING ?></th>
-	</tr>
-<?php
-	foreach ($warning_Array as $error) {
-?>
-	<tr>
-		<td>
-			<?= $error["calender_summary"]?>
-		</td>
-		<td>
-			<?= $error["date"]?>
-		</td>
-		<td>
-			<?= $error["start_time"]?>
-		</td>
-		<td>
-			<?= $error["end_time"]?>
-		</td>
-		<td>
-			<?= $error["summary"]?>
-		</td>
-		<td>
-			<?= $error["message"]?>
-		</td>
-	</tr>
-<?php
-	}
-?>
-</table><br>
-<?php
-$warning_Array=array();
-}
-
 } // mode != 'transport'
 
 $sql = "SELECT e.cal_summary, e.cal_evt_summary, e.cal_id, e.course_id, e.event_end_timestamp, e.event_start_timestamp, ".
@@ -778,20 +735,10 @@ foreach ($event_list as &$event) {
 				}
 			}
 			// タイプ
-			$event_date = date("Y/m/d", $event['event_start_timestamp']);
 			if ($event["course_id"] == "0") {
 				$course_name = "";
-				if ($event["subject_id"] == "0") {
-					if (!in_array($event_date , $sat_sun_class_date_list))
-						$course_name = $course_list[$season_course_id]['course_name'];
-					else
-						$course_name = $course_list[9]['course_name'];
-				}					
 			} else {
 				$course_name = $course_list[$event["course_id"]]["course_name"];
-				if ($event["course_id"] == "9" && !in_array($event_date , $sat_sun_class_date_list)) {
-						$course_name = $course_list[$season_course_id]['course_name'];
-				}
 			}
 
 	$event["course_name"]  = $course_name;
@@ -801,7 +748,7 @@ foreach ($event_list as &$event) {
 	foreach ($work_type_list as $key=>$work_type) {
 		if (!$work_type) { continue; }
 		if (strpos($event['cal_evt_summary'], $work_type)!==false) {
-//			$event["course_name"]  = '';
+			$event["course_name"]  = '';
 			$event["lesson_name"]  = $lesson_name;
 			$event["subject_name"] = $work_type;
 			$event["work_type"]    = $key;
@@ -825,35 +772,35 @@ foreach ($event_list as &$event) {
 			if (!$ret) { continue; }
 			if (str_replace(' ','',$name) != str_replace(' ','',$name_cal[1])) { continue; }
 			$event['eng_name'] = $name_cal[2];
-			if (preg_match('/^休み[1１]\s*:/u',$block)) { $attendStatusCal[$event['date']][$event['time']][$name] = '休み１'; }
-			if (preg_match('/^休み[2２]\s*:/u',$block)) { $attendStatusCal[$event['date']][$event['time']][$name] = '休み２'; }
-			if (preg_match('/^振替\s*:/u',$block))      { $attendStatusCal[$event['date']][$event['time']][$name] = '振替'; }
-			if (preg_match('/:\s*当日/u',$block))      { $attendStatusCal[$event['date']][$event['time']][$name] .= '当日'; }
-			if (preg_match('/:\s*休講/u',$block))      { $attendStatusCal[$event['date']][$event['time']][$name] .= '休講'; }
+			if (preg_match('/^休み[1１]\s*:/u',$block)) { $attendStatusCal[$event['date']][$event['time']][$name] = STR_YASUMI1; }
+			if (preg_match('/^休み[2２]\s*:/u',$block)) { $attendStatusCal[$event['date']][$event['time']][$name] = STR_YASUMI2; }
+			if (preg_match('/^振替\s*:/u',$block))      { $attendStatusCal[$event['date']][$event['time']][$name] = STR_FURIKAE; }
+			if (preg_match('/:\s*当日/u',$block))      { $attendStatusCal[$event['date']][$event['time']][$name] .= STR_TOUJITSU; }
+			if (preg_match('/:\s*休講/u',$block))      { $attendStatusCal[$event['date']][$event['time']][$name] .= STR_KYUUKOU; }
 			if (preg_match('/^absent1\s*:/iu',$block))  { $attendStatusCal[$event['date']][$event['time']][$name] = 'Absent1'; }
 			if (preg_match('/^absent2\s*:/iu',$block))  { $attendStatusCal[$event['date']][$event['time']][$name] = 'Absent2'; }
 			if (preg_match('/^alternative\s*:/iu',$block)) { $attendStatusCal[$event['date']][$event['time']][$name] = 'make-up'; }
 			if (preg_match('/^make.?up\s*:/iu',$block)) { $attendStatusCal[$event['date']][$event['time']][$name] = 'make-up'; }
 			if (preg_match('/:\s*today/iu',$block))    { $attendStatusCal[$event['date']][$event['time']][$name] .= ' Today'; }
 			if (preg_match('/:\s*No.*class/iu',$block)) { $attendStatusCal[$event['date']][$event['time']][$name] .= ' No class'; }
-			if (preg_match('/:\s*規定回数以上/u',$block))    { $attendStatusCal[$event['date']][$event['time']][$name] .= '規定回数以上'; }
+			if (preg_match('/:\s*規定回数以上/u',$block))    { $attendStatusCal[$event['date']][$event['time']][$name] .= STR_OVERLIMIT; }
 			if (preg_match('/:\s*over.*?limit/iu',$block))    { $attendStatusCal[$event['date']][$event['time']][$name] .= ' over limit'; }
 		}
 	} else {
 		$allPreFix = '';
-		if (preg_match('/^休み[1１]\s*:/u',$blocks[1][0])) { $allPreFix = '休み１'; }
-		if (preg_match('/^休み[2２]\s*:/u',$blocks[1][0])) { $allPreFix = '休み２'; }
-		if (preg_match('/^振替\s*:/u',$blocks[1][0]))     { $allPreFix = '振替'; }
+		if (preg_match('/^休み[1１]\s*:/u',$blocks[1][0])) { $allPreFix = STR_YASUMI1; }
+		if (preg_match('/^休み[2２]\s*:/u',$blocks[1][0])) { $allPreFix = STR_YASUMI2; }
+		if (preg_match('/^振替\s*:/u',$blocks[1][0]))     { $allPreFix = STR_FURIKAE; }
 		if (preg_match('/^absent1\s*:/iu',$blocks[1][0]))     { $allPreFix = 'Absent1'; }
 		if (preg_match('/^absent2\s*:/iu',$blocks[1][0]))     { $allPreFix = 'Absent2'; }
 		if (preg_match('/^alternative\s*:/iu',$blocks[1][0])) { $allPreFix = 'make-up'; }
 		if (preg_match('/^make.?up\s*:/iu',$blocks[1][0]))    { $allPreFix = 'make-up'; }
 		$allPostFix = '';
-		if (preg_match('/ 様 .*:\s*当日/u',$blocks[1][0])) { $allPostFix = '当日'; }
-		if (preg_match('/ 様 .*:\s*休講/u',$blocks[1][0])) { $allPostFix = '休講'; }
+		if (preg_match('/ 様 .*:\s*当日/u',$blocks[1][0])) { $allPostFix = STR_TOUJITSU; }
+		if (preg_match('/ 様 .*:\s*休講/u',$blocks[1][0])) { $allPostFix = STR_KYUUKOU; }
 		if (preg_match('/ 様 .*:\s*today/iu',$blocks[1][0])) { $allPostFix = ' Today'; }
 		if (preg_match('/ 様 .*:\s*No.*class/iu',$blocks[1][0])) { $allPostFix = ' No class'; }
-		if (preg_match('/ 様 .*:\s*規定回数以上/u',$blocks[1][0])) { $allPostFix = '規定回数以上'; }
+		if (preg_match('/ 様 .*:\s*規定回数以上/u',$blocks[1][0])) { $allPostFix = STR_OVERLIMIT; }
 		if (preg_match('/ 様 .*:\s*over.*?limit/iu',$blocks[1][0])) { $allPostFix = ' over limit'; }
 		$str0 = $blocks[1][0];
 		$ret = preg_match_all('/(\S+)/u', $str0, $blocks);
@@ -874,19 +821,19 @@ foreach ($event_list as &$event) {
 					$name0 = $family_name.' '.$name0;
 					$attendStatusCal[$event['date']][$event['time']][$name0] = '';
 					if ($allPreFix) { $attendStatusCal[$event['date']][$event['time']][$name0] = $allPreFix; }
-					else if (preg_match('/^休み[1１]\s*:/u',$block)) { $attendStatusCal[$event['date']][$event['time']][$name0] = '休み１'; }
-					else if (preg_match('/^休み[2２]\s*:/u',$block)) { $attendStatusCal[$event['date']][$event['time']][$name0] = '休み２'; }
-					else if (preg_match('/^振替\s*:/u',$block))     { $attendStatusCal[$event['date']][$event['time']][$name0] = '振替'; }
+					else if (preg_match('/^休み[1１]\s*:/u',$block)) { $attendStatusCal[$event['date']][$event['time']][$name0] = STR_YASUMI1; }
+					else if (preg_match('/^休み[2２]\s*:/u',$block)) { $attendStatusCal[$event['date']][$event['time']][$name0] = STR_YASUMI2; }
+					else if (preg_match('/^振替\s*:/u',$block))     { $attendStatusCal[$event['date']][$event['time']][$name0] = STR_FURIKAE; }
 					else if (preg_match('/^absent1\s*:/iu',$block))  { $attendStatusCal[$event['date']][$event['time']][$name0] = 'Absent1'; }
 					else if (preg_match('/^absent2\s*:/iu',$block))  { $attendStatusCal[$event['date']][$event['time']][$name0] = 'Absent2'; }
 					else if (preg_match('/^alternative\s*:/iu',$block)) { $attendStatusCal[$event['date']][$event['time']][$name0] = 'make-up'; }
 					else if (preg_match('/^make.?up\s*:/iu',$block)) { $attendStatusCal[$event['date']][$event['time']][$name0] = 'make-up'; }
 					if ($allPostFix) { $attendStatusCal[$event['date']][$event['time']][$name0] .= $allPostFix; }
-					else if (preg_match('/:\s*当日/u',$block))      { $attendStatusCal[$event['date']][$event['time']][$name0] .= '当日'; }
-					else if (preg_match('/:\s*休講/u',$block))      { $attendStatusCal[$event['date']][$event['time']][$name0] .= '休講'; }
+					else if (preg_match('/:\s*当日/u',$block))      { $attendStatusCal[$event['date']][$event['time']][$name0] .= STR_TOUJITSU; }
+					else if (preg_match('/:\s*休講/u',$block))      { $attendStatusCal[$event['date']][$event['time']][$name0] .= STR_KYUUKOU; }
 					else if (preg_match('/:\s*today/iu',$block))    { $attendStatusCal[$event['date']][$event['time']][$name0] .= ' Today'; }
 					else if (preg_match('/:\s*No.*class/iu',$block)) { $attendStatusCal[$event['date']][$event['time']][$name0] .= ' No class'; }
-					else if (preg_match('/:\s*規定回数以上/u',$block)) { $attendStatusCal[$event['date']][$event['time']][$name0] .= '規定回数以上'; }
+					else if (preg_match('/:\s*規定回数以上/u',$block)) { $attendStatusCal[$event['date']][$event['time']][$name0] .= STR_OVERLIMIT; }
 					else if (preg_match('/:\s*over.*?limit/iu',$block)) { $attendStatusCal[$event['date']][$event['time']][$name0] .= ' over limit'; }
 				}
 			} else {
@@ -907,8 +854,6 @@ $rslt = $stmt->fetchAll(PDO::FETCH_ASSOC);
 foreach ($rslt as $item) {
 	$attendStatus[$item['date']][$item['time']][$item['name']] = $item['presence'];
 }
-
-/*
 // 期間講習追加
 $season_exercise = array();
 if ($date_list_string != '()') {
@@ -1075,7 +1020,6 @@ if ($date_list_string != '()') {
 		}
 	}
 }
-*/
 
 $lesson_array = array();
 foreach ($event_list as $key => $value) {
@@ -1277,9 +1221,12 @@ while ($event) {
 			}
 		}
 		
-		$lastdate=$event["date"]; $lasttime=$event["time"]; $last_cal_evt_summary = $event["cal_evt_summary"];
+		$lastdate=$event["date"]; $lasttime=$event["time"]; 
+		$last_teacher_id =$event["teacher_id"]; 
 		$next_event = next($event_list);
-	} while (($next_event) && ($next_event["date"] == $lastdate) && ($next_event["time"] == $lasttime) && ($next_event["cal_evt_summary"] == $last_cal_evt_summary));
+//	} while (($next_event) && ($next_event["date"] == $lastdate) && ($next_event["time"] == $lasttime) && ($next_event["cal_evt_summary"] == $last_cal_evt_summary));
+	} while (($next_event) && ($next_event["date"] == $lastdate) && ($next_event["time"] == $lasttime) 
+	 && ($next_event["teacher_id"] == $last_teacher_id) && $event["course_id"] != 1 );
 	if ($event['course_id'] == 2 && $member_count == 0) { $member_count = 1; }
 ?>
 		<td align="left" style="padding: 0px 10px 0px 10px;"><?= $nameCol ?></td>
@@ -1307,8 +1254,7 @@ while ($event) {
 			} else {
 				$grade = $event['grade'];
 				if ($grade) {
-					if ($year==date('Y') && date('n') > 4 && $month < 4 && $grade > 1) { $grade--; }
-//					if ($year==date('Y') && date('n') == 4 && $month >= 4 && $grade > 1 && $grade < 14) { $grade++; }
+					if ($year==date('Y') && date('n') >= 4 && $month < 4 && $grade > 1) { $grade--; }
 				}
 			}
 			if ($grade) {
@@ -1423,7 +1369,6 @@ while ($event) {
 		if ($mode!='check')	{ $html_str = ob_get_contents(); ob_end_clean(); }
 		$transport_cost = 0;
 		if ($attendPlaceList) {
-			$DOW = '';
 			if ($teacher['transport_DOW']) {
 				if (strpos($teacher["transport_DOW"], date('w',$event['event_start_timestamp'])) !== false)
 					$transport_cost = $teacher['transport_cost'];
@@ -1432,7 +1377,7 @@ while ($event) {
 				$transport_cost = $teacher['transport_dcost1'][$DOW];
 			}
 			$str0 = implode(',',array_diff(array_unique($attendPlaceList), array('')));
-			$transport_cell = "<td name=\"trnsd{$DOW}[]\" align=\"right\" rowspan=\"$rowspan0\">$transport_cost</td>";
+			$transport_cell = "<td name=\"pay\" align=\"right\" rowspan=\"$rowspan0\">$transport_cost</td>";
 		} else {
 			$str0 = "";
 			$transport_cell = "<td name=\"pay\" rowspan=\"$rowspan0\"></td>";
