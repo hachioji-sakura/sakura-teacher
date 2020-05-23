@@ -1224,9 +1224,9 @@ while ($event) {
 		$lastdate=$event["date"]; $lasttime=$event["time"]; 
 		$last_teacher_id =$event["teacher_id"]; 
 		$next_event = next($event_list);
-//	} while (($next_event) && ($next_event["date"] == $lastdate) && ($next_event["time"] == $lasttime) && ($next_event["cal_evt_summary"] == $last_cal_evt_summary));
-	} while (($next_event) && ($next_event["date"] == $lastdate) && ($next_event["time"] == $lasttime) 
-	 && ($next_event["teacher_id"] == $last_teacher_id) && $event["course_id"] != 1 );
+	} while (($next_event) && ($next_event["date"] == $lastdate) && ($next_event["time"] == $lasttime) && ($next_event["cal_evt_summary"] == $last_cal_evt_summary));
+//	} while (($next_event) && ($next_event["date"] == $lastdate) && ($next_event["time"] == $lasttime) 
+//	 && ($next_event["teacher_id"] == $last_teacher_id) && $event["course_id"] != 1 );
 	if ($event['course_id'] == 2 && $member_count == 0) { $member_count = 1; }
 ?>
 		<td align="left" style="padding: 0px 10px 0px 10px;"><?= $nameCol ?></td>
