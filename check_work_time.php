@@ -2,7 +2,7 @@
 ini_set( 'display_errors', 0 );
 require_once(dirname(__FILE__)."/../sakura/schedule/const/const.inc");
 require_once(dirname(__FILE__)."/../sakura/schedule/func.inc");
-ini_set('include_path', CLIENT_LIBRALY_PATH);
+//ini_set('include_path', CLIENT_LIBRALY_PATH);
 //require_once "Google/autoload.php";
 set_time_limit(60);
 
@@ -210,6 +210,7 @@ $rslt = $stmt->fetch(PDO::FETCH_ASSOC);
 if ($rslt['fixed']) $fixed = 1;
 
 if ($mode!='pay_viewonly' && $mode!='check' && $mode!='transport') {
+/*
 $sql = "
 CREATE TEMPORARY TABLE `tbl_calender_event` (
   `event_id` varchar(100) NOT NULL DEFAULT '',
@@ -285,6 +286,7 @@ if (!$res) {
 	echo 'CREATE TEMPORARY TABLE `tbl_event` error';
 	exit();
 }
+*/
 
 $result = true;
 $err_flag = false;
@@ -292,9 +294,11 @@ $target_teacher_id = $teacher_id;
 $tid = $teacher_id;
 $kari_ignore = '1';
 
+/*
 require_once dirname(__FILE__)."/../sakura/schedule/get_calender_data.inc";
 require_once dirname(__FILE__)."/../sakura/schedule/edit_calender_data.inc";
 require_once dirname(__FILE__)."/../sakura/schedule/check_calender_data.inc";
+*/
 
 $teacher_id = $target_teacher_id;
 }
@@ -410,7 +414,7 @@ if ($teacher['lesson_id'] != 2
 	define(STR_PAYMENT,                'Payment');
 	define(STR_COMMENT1,               '* Red name is an absent student.');
 	define(STR_COMMENT2,               '* Blue name is an trial student.');
-	define(STR_COMMENT3,               '* Light green is a spot (irregularly) class.');
+	define(STR_COMMENT3,               '* Light green is a make-up class.');
 	define(STR_COMMENT4,               "* Wage 'undecided' is fixed untill pay day.");
 	define(STR_GOTO_MENU,              'Go to menu');
 	define(STR_PLACE,                  'place');
