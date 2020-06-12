@@ -47,7 +47,7 @@ if ($teacher_list[$teacher_id]['lesson_id'] != 2) {
 	define (STR_TITLE1,       '八王子さくらアカデミー');
 	define (STR_TITLE2,       '講師:');
 	define (STR_MAINMENU,     'メインメニュー');
-	define (STR_SHUSSEKIBO,   '出席簿');
+	define (STR_SHUSSEKIBO,   '出席簿は <a href="https://sakuraone.jp/login">Sakura One Net</a> へ移行');
 	define (STR_SEASON_CLASS_ENTRY,'期間講習・土日講習登録');
 	define (STR_SEASON_CLASS_SCHEDULE,'期間講習スケジュール');
 	define (STR_SAT_SUN_CLASS_SCHEDULE,'土日講習スケジュール');
@@ -62,7 +62,7 @@ if ($teacher_list[$teacher_id]['lesson_id'] != 2) {
 	define (STR_TITLE1,       'HACHIOJI SAKURA ACADEMY');
 	define (STR_TITLE2,       'Teacher: ');
 	define (STR_MAINMENU,     'Main Menu');
-	define (STR_SHUSSEKIBO,   'Attendance record');
+	define (STR_SHUSSEKIBO,   'Attendance recordis moved to <a href="https://sakuraone.jp/login">Sakura One Net</a>');
 	define (STR_SEASON_CLASS_ENTRY,'Season/Saturdy/Sunday Class Application');
 	define (STR_SEASON_CLASS_SCHEDULE,'Season Class Schedule');
 	define (STR_SAT_SUN_CLASS_SCHEDULE,'Saturdy/Sunday Class Schedule');
@@ -86,7 +86,7 @@ if ($teacher_list[$teacher_id]['lesson_id'] != 2) {
 <h3><?= STR_TITLE2.$teacher_list[$teacher_id]['name'] ?></h3>
 <h3><?= STR_MAINMENU ?></h3>
 <table>
-<tr><td>1. <a href="./check_work_time.php"><?= STR_SHUSSEKIBO ?></a></td></tr>
+<tr><td>1. <?= STR_SHUSSEKIBO ?></td></tr>
 <tr><td>2. <a href="./season_class_teacher_entry.php?class_type=sat_sun_class"><?= STR_SEASON_CLASS_ENTRY ?></a></td></tr>
 <tr><td>3. <a href="./season_class_schedule.php?class_type=season_class"><?= STR_SEASON_CLASS_SCHEDULE ?></a></td></tr>
 <tr><td>4. <a href="./season_class_schedule.php?class_type=sat_sun_class"><?= STR_SAT_SUN_CLASS_SCHEDULE ?></a></td></tr>
@@ -117,6 +117,12 @@ if ($teacher_list[$teacher_id]['lesson_id'] != 2) {
 				<form method="post" action="payslip.php">
 				　　　　<input type="text" name="y" value="<?php echo $payy; ?>" size="4">年&nbsp;
 				<select name="m">
+				<option value="1" <?= $paym1 ?>>1月</option>
+				<option value="2" <?= $paym2 ?>>2月</option>
+				<option value="3" <?= $paym3 ?>>3月</option>
+				<option value="4" <?= $paym4 ?>>4月</option>
+				<option value="5" <?= $paym5 ?>>5月</option>
+				<option value="6" <?= $paym6 ?>>6月</option>
 				<option value="7" <?= $paym7 ?>>7月</option>
 				<option value="8" <?= $paym8 ?>>8月</option>
 				<option value="9" <?= $paym9 ?>>9月</option>
