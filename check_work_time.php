@@ -1087,7 +1087,7 @@ foreach ($event_list as $key => $value) {
     $sort2[$key] = $value['time'];
 		$sort3[$key] = $value['cal_evt_summary'];
 		$sort4[$key] = $value['furigana'];
-		$lesson_array[$value['date']][] = $value['time'].$value['cal_evt_summary'];
+		$lesson_array[$value['date']][] = $value['time'];
 }
 
 array_multisort(
@@ -1238,7 +1238,7 @@ while ($event) {
 				$color = (strpos($st,STR_YASUMI)===false)? "black" : "red" ;
 				if ($event["trial_flag"]) { $color = "blue"; }
 				$name0 = $name;
-				if (($teacher['lesson_id'] == 2) && $names_eng[$key]) {
+				if (($teacher['lesson_id'] == 2) && trim($names_eng[$key])) {
 					$name0 = $names_eng[$key];
 				}
 				$nameCol .= "<font id=\"name$i\" color=\"$color\">$name0</font><br>";
