@@ -842,6 +842,8 @@ foreach ($event_list as &$event) {
 			if (preg_match('/:\s*No.*class/iu',$block)) { $attendStatusCal[$event['date']][$event['time']][$name] .= ' No class'; }
 			if (preg_match('/:\s*規定回数以上/u',$block))    { $attendStatusCal[$event['date']][$event['time']][$name] .= STR_OVERLIMIT; }
 			if (preg_match('/:\s*over.*?limit/iu',$block))    { $attendStatusCal[$event['date']][$event['time']][$name] .= ' over limit'; }
+			if ($attendStatusCal[$event['date']][$event['time']][$name] == '')
+				$attendStatusCal[$event['date']][$event['time']][$name] = STR_SHUSSEKI;
 		}
 	} else {
 		$allPreFix = '';
@@ -892,6 +894,8 @@ foreach ($event_list as &$event) {
 					else if (preg_match('/:\s*No.*class/iu',$block)) { $attendStatusCal[$event['date']][$event['time']][$name0] .= ' No class'; }
 					else if (preg_match('/:\s*規定回数以上/u',$block)) { $attendStatusCal[$event['date']][$event['time']][$name0] .= '規定回数以上'; }
 					else if (preg_match('/:\s*over.*?limit/iu',$block)) { $attendStatusCal[$event['date']][$event['time']][$name0] .= ' over limit'; }
+					if ($attendStatusCal[$event['date']][$event['time']][$name0] == '')
+						$attendStatusCal[$event['date']][$event['time']][$name0] = STR_SHUSSEKI;
 				}
 			} else {
 				$event['eng_name'] .= $block.' ';
@@ -904,6 +908,7 @@ foreach ($event_list as &$event) {
 }
 unset($event);
 
+/*
 $stmt = $db->query(
 		"SELECT * FROM tbl_teacher_presence_report ".
 		"WHERE teacher_id=\"$teacher_id\" AND year=\"$year\" AND month=\"$month\"");
@@ -912,7 +917,6 @@ foreach ($rslt as $item) {
 	$attendStatus[$item['date']][$item['time']][$item['name']] = $item['presence'];
 }
 
-/*
 // 期間講習追加
 $season_exercise = array();
 if ($date_list_string != '()') {
@@ -1187,8 +1191,9 @@ while ($event) {
 		echo $date_cell;
 	}
 	if ($event['course_id'] != $season_course_id)
-		$place_name = ($event['lesson_id']!=2)?$place_list[$event['place_id']]['name']: 
-			mb_substr($event["cal_summary"],mb_strpos($event["cal_summary"],'_')+1);
+//		$place_name = ($event['lesson_id']!=2)?$place_list[$event['place_id']]['name']: 
+//			mb_substr($event["cal_summary"],mb_strpos($event["cal_summary"],'_')+1);
+		$place_name = $place_list[$event['place_id']]['name'];
 	else
 		$place_name = str_replace('校舎','校',str_replace('八王子','',$event['place']));
 ?>
@@ -1229,7 +1234,8 @@ while ($event) {
 				$names_eng = array( trim($event['eng_name'])? $event['eng_name']: eng_name1($kana2romaji->convert($event["furigana"])) );
 			}
 			foreach ($names as $key=>$name) {
-				$st = ($mode=='pay_viewonly')?$attendStatusCal[$event["date"]][$event["time"]][$name]:$attendStatus[$event["date"]][$event["time"]][$name];
+//				$st = ($mode=='pay_viewonly')?$attendStatusCal[$event["date"]][$event["time"]][$name]:$attendStatus[$event["date"]][$event["time"]][$name];
+				$st = $attendStatusCal[$event["date"]][$event["time"]][$name];
 				$st_index = ($st)? array_search($st, $attendStatusList)+1: 0;
 				if (array_search($st, $attendStatusList)===false) {
 					$st_index = ($st)? array_search($st, $attendStatusList_eng)+1: 0;
