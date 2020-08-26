@@ -1100,7 +1100,7 @@ array_multisort(
 	
 $lesson_count = array();
 foreach ($lesson_array as $key=>$item) {
-	$lesson_count[$key] = count ( array_unique($item) );
+	$lesson_count[$key] = count ( $item );
 
 }
 
