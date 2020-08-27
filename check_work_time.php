@@ -1101,7 +1101,6 @@ array_multisort(
 $lesson_count = array();
 foreach ($lesson_array as $key=>$item) {
 	$lesson_count[$key] = count ( $item );
-
 }
 
 } catch (Exception $e) {
@@ -1186,7 +1185,7 @@ while ($event) {
 	if ($rowspan == 0) {
 		$rowspan = $lesson_count[$event["date"]];
 		$rowspan0 = (($mode == 'transport')?1:$rowspan);
-		$date_cell = "<td align=\"left\" style=\"padding: 0px 10px 0px 10px;\" bgcolor=\"#ffffff\" rowspan=\"$rowspan0\">".
+		$date_cell = "<td align=\"left\" style=\"padding: 0px 10px 0px 10px;\" bgcolor=\"#ffffff\" rowspan=\"<ROWSPAN>\">".
 			str_replace(array('月','日'),array('/',''),$event["date"])."$DOW</td>";
 		echo $date_cell;
 	}
@@ -1216,6 +1215,7 @@ while ($event) {
 	?></td>
 <?php
 	$next_event = $event;
+	$multi_flag = 0;
 	do {
 		$event = $next_event;
 		if ($event["member_no"]) {
@@ -1286,6 +1286,9 @@ while ($event) {
 				$nameCol = $event['member_cal_name'];
 			}
 		}
+		
+		if ($multi_flag) { $rowspan--; if ($mode != 'transport') $rowspan0--; }
+		$multi_flag = 1;
 		
 		$lastdate=$event["date"]; $lasttime=$event["time"]; $last_cal_evt_summary = $event["cal_evt_summary"];
 		$next_event = next($event_list);
@@ -1459,7 +1462,7 @@ while ($event) {
 					"<input type=\"text\" name=\"transport1[]\" style=\"width:80px;\" value=\"{$teacher['transport_correct_cost'][$date]}\"></td>".
 					"<td><input type=\"text\" name=\"transport_comment[]\" size=40 value=\"{$teacher['transport_comment'][$date]}\"></td></tr>\n";
 		} else if ($mode!='check')	{
-			echo str_replace("<TRANSPORT_COST_STRING>", "", $html_str);
+			echo str_replace("<TRANSPORT_COST_STRING>", "", str_replace("<ROWSPAN>","$rowspan0",$html_str));
 		}
 		
 		$attendPlaceList = array();
