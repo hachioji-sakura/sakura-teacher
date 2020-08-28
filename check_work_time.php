@@ -1279,7 +1279,7 @@ while ($event) {
 				$i++;
 				if (!($event['course_id'] == 2 && $event["trial_flag"])) { $member_count++; }
 				
-				if ($st == STR_SHUSSEKI || $st == STR_FURIKAE)	$attendPlaceList[] = $place_name;
+				if (($st == STR_SHUSSEKI || $st == STR_FURIKAE) && $place_name)	$attendPlaceList[] = $place_name;
 			}
 		} else {
 			if (event['work_type']) {
