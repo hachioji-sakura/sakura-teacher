@@ -1195,6 +1195,7 @@ while ($event) {
 		$place_name = $place_list[$event['place_id']]['name'];
 	else
 		$place_name = str_replace('校舎','校',str_replace('八王子','',$event['place']));
+	$place_name = mb_substr($place_name,0,mb_strpos($place_name,'校')+1);
 ?>
 	<td align="left" style="padding: 0px 10px 0px 10px;"><?= $event["time"] ?></td>
 	<td align="left" style="padding: 0px 10px 0px 10px;"><?= sprintf( "%4.2f", $diff_hours ) ?></td>

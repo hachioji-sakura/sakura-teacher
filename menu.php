@@ -89,7 +89,28 @@ if ($teacher_list[$teacher_id]['lesson_id'] != 2) {
 <tr><td>1. <?= STR_SHUSSEKIBO ?></td></tr>
 <tr><td>2. <a href="./season_class_teacher_entry.php?class_type=sat_sun_class"><?= STR_SEASON_CLASS_ENTRY ?></a></td></tr>
 <tr><td>3. <a href="./season_class_schedule.php?class_type=season_class"><?= STR_SEASON_CLASS_SCHEDULE ?></a></td></tr>
-<tr><td>4. <a href="./season_class_schedule.php?class_type=sat_sun_class"><?= STR_SAT_SUN_CLASS_SCHEDULE ?></a></td></tr>
+<tr><td>4. <?= STR_SAT_SUN_CLASS_SCHEDULE ?>
+				<form method="post" action="season_class_schedule.php">
+				　　　　<input type="text" name="y" value="<?php echo $year; ?>" size="4">年&nbsp;
+				<select name="m">
+				<option value="1" <?= $selectm1 ?>>1月</option>
+				<option value="2" <?= $selectm2 ?>>2月</option>
+				<option value="3" <?= $selectm3 ?>>3月</option>
+				<option value="4" <?= $selectm4 ?>>4月</option>
+				<option value="5" <?= $selectm5 ?>>5月</option>
+				<option value="6" <?= $selectm6 ?>>6月</option>
+				<option value="7" <?= $selectm7 ?>>7月</option>
+				<option value="8" <?= $selectm8 ?>>8月</option>
+				<option value="9" <?= $selectm9 ?>>9月</option>
+				<option value="10" <?= $selectm10 ?>>10月</option>
+				<option value="11" <?= $selectm11 ?>>11月</option>
+				<option value="12" <?= $selectm12 ?>>12月</option>
+				</select>&nbsp;
+				<input type="hidden" name="class_type" value="sat_sun_class">
+				<input type="hidden" name="mode" value="1">
+				<input type="submit" value="表示">
+				</form>
+</td></tr>
 <tr><td>5. <?= STR_SEASON_CLASS_SCHEDULE1 ?>
 				<form method="post" action="season_class_student_schedule.php" target="_blank">
 				<input type="hidden" name="class_type" value="season_class">
