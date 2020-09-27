@@ -492,13 +492,17 @@ function set_pay(id1){
 	if (stSelect.length) {
 		for (var i=0;i<stSelect.length;i++) {
 			var str = (stSelect[i].nodeName=='SELECT')?stSelect[i].options[stSelect[i].selectedIndex].value:str = stSelect[i].innerHTML;
-			if (str.indexOf("<?= STR_SHUSSEKI ?>") !== -1) { flag1=1; }
-			if (str.indexOf("<?= STR_FURIKAE  ?>") !== -1) { flag1=1; }
-			if (str.indexOf("<?= STR_TOUJITSU ?>") !== -1) { flag2=1; }
+			if (str.indexOf("出席") !== -1) { flag1=1; }
+			if (str.indexOf("振替") !== -1) { flag1=1; }
+			if (str.indexOf("当日") !== -1) { flag2=1; }
+			if (str.indexOf("Attend") !== -1) { flag1=1; }
+			if (str.indexOf("make-up") !== -1) { flag1=1; }
+			if (str.indexOf("Today") !== -1) { flag2=1; }
 			if (str=='') { flag3=0; }
 		}
 		if (course_name[id1-1].innerText.indexOf("講習")!=-1) {
 			var str = (stSelect[0].nodeName=='SELECT')?stSelect[0].options[stSelect[0].selectedIndex].value:str = stSelect[0].innerHTML;
+			if (str.indexOf("休み") !== -1 && str.indexOf("当日") == -1) { wage = 0; }
 			if (str.indexOf("<?= STR_YASUMI ?>") !== -1 && str.indexOf("<?= STR_TOUJITSU ?>") == -1) { wage = 0; }
 		} else {
 			if (flag1 == 0) { 
@@ -815,6 +819,7 @@ foreach ($event_list as &$event) {
 	
 	$name = $event["name"];
 	if ($name=='体験生徒') { $name = $event['member_cal_name']; }
+	if ($event['member_no']=='000001')	$name='体験生徒';
 	$attendStatusCal[$event['date']][$event['time']][$name] = '';
 	$str0 = str_replace(array('　','（','）','：','︰'), array(' ','(',')',':',':'), $event['cal_evt_summary']);
 	if (preg_match('/(グループ|Group)/iu',$str0) || preg_match('/(ファミリー|family)/iu',$str0)) {
@@ -1203,7 +1208,7 @@ while ($event) {
 	<td align="left" style="padding: 0px 10px 0px 10px;"><?= ($event["lesson_name"]=='英会話')?English:$event["lesson_name"] ?></td>
 	<td align="left" style="padding: 0px 10px 0px 10px;"><?= ($event["subject_name"]=='英会話')?English:$event["subject_name"] ?></td>
 	<td align="left" style="padding: 0px 10px 0px 10px;" name="course_name"><?php
-		if ($teacher['lesson_id'] != 2) {
+		if (!($teacher['lesson_id'] == 2 && !$teacher['lesson_id2'])) {
 			echo $event["course_name"];
 		} else {
 			switch ($event["course_name"]) {
@@ -1222,6 +1227,7 @@ while ($event) {
 		if ($event["member_no"]) {
 			$name = $event["name"];
 			if ($name=='体験生徒') { $name = $event['member_cal_name']; }
+			if ($event['member_no']=='000001')	$name='体験生徒';
 
 			if ($event["course_id"] == 3) {
 				$tmp0 = explode(' ',$name);
@@ -1245,7 +1251,7 @@ while ($event) {
 				$color = (strpos($st,STR_YASUMI)===false)? "black" : "red" ;
 				if ($event["trial_flag"]) { $color = "blue"; }
 				$name0 = $name;
-				if (($teacher['lesson_id'] == 2) && trim($names_eng[$key])) {
+				if ($teacher['lesson_id'] == 2 && !$teacher['lesson_id2'] && trim($names_eng[$key])) {
 					$name0 = $names_eng[$key];
 				}
 				$nameCol .= "<font id=\"name$i\" color=\"$color\">$name0</font><br>";
@@ -1261,24 +1267,31 @@ while ($event) {
 					if ($fixed) $str = "<span name=\"stSelect{$no}\">$st</span>";
 					if (!$name || $event['work_type']) { $str=''; }
 					$stSelect .= "$str<br>";
-				$calst0 = $attendStatusCal[$event["date"]][$event["time"]][$name];
-				if (attendStatusList != $attendStatusList_eng) {
-					$index1 = array_search($calst0, $attendStatusList_eng);
-					$calst1 = $attendStatusList_jp[$index1];
-				} else {
-					$index1 = array_search($calst0, $attendStatusList_jp);
-					$calst1 = $attendStatusList_eng[$index1];
-				}
-				if (($st==STR_SHUSSEKI && $calst0=='') || ($st!=STR_SHUSSEKI && ($st==$calst0 || $st==$calst1))) {
-					$bgcolor = '';
-				} else {
-					$bgcolor = "style=\"background-color:#FFFF00;\"";
-				}
-				if ($calst0 == '') { $calst0 = '　　　　　　'; }
-				$calStatus .= "<span id=\"cal$i\" $bgcolor>".$calst0.'</span><br>';
+					$calst0 = $attendStatusCal[$event["date"]][$event["time"]][$name];
+					if (attendStatusList != $attendStatusList_eng) {
+						$index1 = array_search($calst0, $attendStatusList_eng);
+						$calst1 = $attendStatusList_jp[$index1];
+					} else {
+						$index1 = array_search($calst0, $attendStatusList_jp);
+						$calst1 = $attendStatusList_eng[$index1];
+					}
+					if (($st==STR_SHUSSEKI && $calst0=='') || ($st!=STR_SHUSSEKI && ($st==$calst0 || $st==$calst1))) {
+						$bgcolor = '';
+					} else {
+						$bgcolor = "style=\"background-color:#FFFF00;\"";
+					}
+					if ($calst0 == '') { $calst0 = '　　　　　　'; }
+					$calStatus .= "<span id=\"cal$i\" $bgcolor>".$calst0.'</span><br>';
 				}
 				$i++;
-				if (!($event['course_id'] == 2 && $event["trial_flag"])) { $member_count++; }
+				if (!$event['absent_flag']) {
+					if (!($event['course_id'] == 2 && $event["trial_flag"])) { $member_count++; }
+				} else {
+					if (preg_match('/(当日|today)/iu', $attendStatusCal[$event["date"]][$event["time"]][$name])) {
+						if (!($event['course_id'] == 2 && $event["trial_flag"])) { $member_count++; }
+						$todayFlag = 1;
+					}
+				}
 				
 				if (($st == STR_SHUSSEKI || $st == STR_FURIKAE) && $place_name)	$attendPlaceList[] = $place_name;
 			}
@@ -1295,8 +1308,8 @@ while ($event) {
 		$next_event = next($event_list);
 //	} while (($next_event) && ($next_event["date"] == $lastdate) && ($next_event["time"] == $lasttime) && ($next_event["cal_evt_summary"] == $last_cal_evt_summary));
 	} while (($next_event) && ($next_event["date"] == $lastdate) && ($next_event["time"] == $lasttime) 
-	&& ($next_event["teacher_id"] == $last_teacher_id) && $event["course_id"] != 1 );	// teacher is same and not man2man.
-	if ($event['course_id'] == 2 && $member_count == 0) { $member_count = 1; }
+		&& ($next_event["teacher_id"] == $last_teacher_id) && ($next_event["course_id"] == $event['course_id']) && $event["course_id"] != 1 );	// teacher is same and not man2man.
+	if ($member_count == 0) { $member_count = 1; }
 ?>
 		<td align="left" style="padding: 0px 10px 0px 10px;"><?= $nameCol ?></td>
 		<td align="left" style="padding: 0px 10px 0px 10px;"><?= $stSelect ?></td>
