@@ -44,35 +44,35 @@ $teacher_id	= $_SESSION['ulogin']['teacher_id'];
 $teacher_list = get_teacher_list($db, array(), array(), array());
 
 if ($teacher_list[$teacher_id]['lesson_id'] != 2) {
-	define (STR_TITLE1,       '八王子さくらアカデミー');
-	define (STR_TITLE2,       '講師:');
-	define (STR_MAINMENU,     'メインメニュー');
-	define (STR_SHUSSEKIBO,   '出席簿は <a href="https://sakuraone.jp/login">Sakura One Net</a> へ移行');
-	define (STR_SEASON_CLASS_ENTRY,'期間講習・土日講習登録');
-	define (STR_SEASON_CLASS_SCHEDULE,'期間講習スケジュール');
-	define (STR_SAT_SUN_CLASS_SCHEDULE,'土日講習スケジュール');
-	define (STR_SEASON_CLASS_SCHEDULE1,'期間講習生徒配布用スケジュール');
-	define (STR_SAT_SUN_CLASS_SCHEDULE1,'土日講習生徒配布用スケジュール');
-	define (STR_PAYSLIP,      '給料明細');
-	define (STR_TATEKAE,      '立替経費申請');
-	define (STR_TRANSPORT_COST,'交通費申請');
-	define (STR_SET_PASSWORD, 'パスワード設定');
-	define (STR_LOGOUT,       'ログアウト');
+	define ('STR_TITLE1',       '八王子さくらアカデミー');
+	define ('STR_TITLE2',       '講師:');
+	define ('STR_MAINMENU',     'メインメニュー');
+	define ('STR_SHUSSEKIBO',   '出席簿');
+	define ('STR_SEASON_CLASS_ENTRY','期間講習・土日講習登録');
+	define ('STR_SEASON_CLASS_SCHEDULE','期間講習スケジュール');
+	define ('STR_SAT_SUN_CLASS_SCHEDULE','土日講習スケジュール');
+	define ('STR_SEASON_CLASS_SCHEDULE1','期間講習生徒配布用スケジュール');
+	define ('STR_SAT_SUN_CLASS_SCHEDULE1','土日講習生徒配布用スケジュール');
+	define ('STR_PAYSLIP',      '給料明細');
+	define ('STR_TATEKAE',      '立替経費申請');
+	define ('STR_TRANSPORT_COST','交通費申請');
+	define ('STR_SET_PASSWORD', 'パスワード設定');
+	define ('STR_LOGOUT',       'ログアウト');
 } else {
-	define (STR_TITLE1,       'HACHIOJI SAKURA ACADEMY');
-	define (STR_TITLE2,       'Teacher: ');
-	define (STR_MAINMENU,     'Main Menu');
-	define (STR_SHUSSEKIBO,   'Attendance recordis moved to <a href="https://sakuraone.jp/login">Sakura One Net</a>');
-	define (STR_SEASON_CLASS_ENTRY,'Season/Saturdy/Sunday Class Application');
-	define (STR_SEASON_CLASS_SCHEDULE,'Season Class Schedule');
-	define (STR_SAT_SUN_CLASS_SCHEDULE,'Saturdy/Sunday Class Schedule');
-	define (STR_SEASON_CLASS_SCHEDULE1,'Season Class Schedule for student');
-	define (STR_SAT_SUN_CLASS_SCHEDULE1,'Saturdy/Sunday Class Schedule for student');
-	define (STR_PAYSLIP,      'Payslip');
-	define (STR_TATEKAE,      'Reimbursed Expenses Application');
-	define (STR_TRANSPORT_COST,'Transportation Expenses Application');
-	define (STR_SET_PASSWORD, 'Set password');
-	define (STR_LOGOUT,       'Logout');
+	define ('STR_TITLE1',       'HACHIOJI SAKURA ACADEMY');
+	define ('STR_TITLE2',       'Teacher: ');
+	define ('STR_MAINMENU',     'Main Menu');
+	define ('STR_SHUSSEKIBO',   'Attendance record');
+	define ('STR_SEASON_CLASS_ENTRY','Season/Saturdy/Sunday Class Application');
+	define ('STR_SEASON_CLASS_SCHEDULE','Season Class Schedule');
+	define ('STR_SAT_SUN_CLASS_SCHEDULE','Saturdy/Sunday Class Schedule');
+	define ('STR_SEASON_CLASS_SCHEDULE1','Season Class Schedule for student');
+	define ('STR_SAT_SUN_CLASS_SCHEDULE1','Saturdy/Sunday Class Schedule for student');
+	define ('STR_PAYSLIP',      'Payslip');
+	define ('STR_TATEKAE',      'Reimbursed Expenses Application');
+	define ('STR_TRANSPORT_COST','Transportation Expenses Application');
+	define ('STR_SET_PASSWORD', 'Set password');
+	define ('STR_LOGOUT',       'Logout');
 }
 ?>
 <html>
@@ -86,7 +86,7 @@ if ($teacher_list[$teacher_id]['lesson_id'] != 2) {
 <h3><?= STR_TITLE2.$teacher_list[$teacher_id]['name'] ?></h3>
 <h3><?= STR_MAINMENU ?></h3>
 <table>
-<tr><td>1. <?= STR_SHUSSEKIBO ?></td></tr>
+<tr><td>1. <?= STR_SHUSSEKIBO ?>　<a href="https://sakuraone.jp/login">https://sakuraone.jp/login</a></td></tr>
 <tr><td>2. <a href="./season_class_teacher_entry.php?class_type=sat_sun_class"><?= STR_SEASON_CLASS_ENTRY ?></a></td></tr>
 <tr><td>3. <a href="./season_class_schedule.php?class_type=season_class"><?= STR_SEASON_CLASS_SCHEDULE ?></a></td></tr>
 <tr><td>4. <?= STR_SAT_SUN_CLASS_SCHEDULE ?>
@@ -140,27 +140,9 @@ if ($teacher_list[$teacher_id]['lesson_id'] != 2) {
 				<input type="submit" value="表示">
 				</form>
 </td></tr>
-<tr><td>7. <?= STR_PAYSLIP ?>
-				<form method="post" action="payslip.php">
-				　　　　<input type="text" name="y" value="<?php echo $payy; ?>" size="4">年&nbsp;
-				<select name="m">
-				<option value="1" <?= $paym1 ?>>1月</option>
-				<option value="2" <?= $paym2 ?>>2月</option>
-				<option value="3" <?= $paym3 ?>>3月</option>
-				<option value="4" <?= $paym4 ?>>4月</option>
-				<option value="5" <?= $paym5 ?>>5月</option>
-				<option value="6" <?= $paym6 ?>>6月</option>
-				<option value="7" <?= $paym7 ?>>7月</option>
-				<option value="8" <?= $paym8 ?>>8月</option>
-				<option value="9" <?= $paym9 ?>>9月</option>
-				<option value="10" <?= $paym10 ?>>10月</option>
-				<option value="11" <?= $paym11 ?>>11月</option>
-				<option value="12" <?= $paym12 ?>>12月</option>
-				</select>&nbsp;
-				<input type="submit" value="表示">
-				</form>
-<tr><td>8. <a href="./tatekae_edit.php"><?= STR_TATEKAE ?></a></td></tr>
-<tr><td>9. <a href="./teacher_edit.php"><?= STR_TRANSPORT_COST ?></a></td></tr>
+<tr><td>7. <?= STR_PAYSLIP ?>　<a href="https://admin.sakuraone.jp/login">https://admin.sakuraone.jp/login</a></td></tr>
+<tr><td>8. <?= STR_TATEKAE ?>　<a href="https://admin.sakuraone.jp/login">https://admin.sakuraone.jp/login</a></td></tr>
+<tr><td>9. <?= STR_TRANSPORT_COST ?>　<a href="https://admin.sakuraone.jp/login">https://admin.sakuraone.jp/login</a></td></tr>
 <tr><td>10. <a href="./set_password.php"><?= STR_SET_PASSWORD ?></a></td></tr>
 <tr><td>　</td></tr>
 <tr><td align="center"><a href="./login.php"><?= STR_LOGOUT ?></a></td></tr>

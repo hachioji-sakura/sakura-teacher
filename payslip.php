@@ -15,15 +15,15 @@ $year = $_POST['y'];
 $month = $_POST['m'];
 
 if ($teacher['lesson_id'] != 2) {
-	define (STR_TITLE1,        '八王子さくらアカデミー');
-	define (STR_TITLE2,        '講師:&nbsp;');
-	define (STR_PAYSLIP,       '給料明細');
-	define (STR_MAINMENU,      'メインメニューへ戻る');
+	define ('STR_TITLE1',        '八王子さくらアカデミー');
+	define ('STR_TITLE2',        '講師:&nbsp;');
+	define ('STR_PAYSLIP',       '給料明細');
+	define ('STR_MAINMENU',      'メインメニューへ戻る');
 } else {
-	define (STR_TITLE1,        'HACHIOJI SAKURA ACADEMY');
-	define (STR_TITLE2,        'Teacher:&nbsp;');
-	define (STR_PAYSLIP,       'Payslip');
-	define (STR_MAINMENU,      'Back to Main Menu');
+	define ('STR_TITLE1',        'HACHIOJI SAKURA ACADEMY');
+	define ('STR_TITLE2',        'Teacher:&nbsp;');
+	define ('STR_PAYSLIP',       'Payslip');
+	define ('STR_MAINMENU',      'Back to Main Menu');
 }
 
 

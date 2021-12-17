@@ -11,33 +11,33 @@ $teacher_list = get_teacher_list($db, array(), array(), array());
 $teacher = $teacher_list[$teacher_id];
 
 if ($teacher['lesson_id'] != 2) {
-	define (STR_TITLE1,        '八王子さくらアカデミー');
-	define (STR_TITLE2,        '講師:&nbsp;');
-	define (STR_CURRENT_PASS,  '現在のパスワード');
-	define (STR_NEW_PASSWORD1, '新しいパスワード');
-	define (STR_NEW_PASSWORD2, '新しいパスワード（再入力）');
-	define (STR_CHANGE,        '変更する');
-	define (STR_SET_PASSWORD,  'パスワード設定');
-	define (STR_LOGOUT,        'ログアウト');
-	define (STR_MAINMENU,      'メインメニューへ戻る');
-	define (STR_ERROR1,        '現在のパスワードが違います。');
-	define (STR_ERROR2,        '新しいパスワードと新しいパスワード（再入力）が一致しません。');
-	define (STR_ERROR3,        '新しいパスワードが空です。');
-	define (STR_COMMENT,       'パスワードは40文字までの任意の半角英数字記号が使用できます。');
+	define ('STR_TITLE1',        '八王子さくらアカデミー');
+	define ('STR_TITLE2',        '講師:&nbsp;');
+	define ('STR_CURRENT_PASS',  '現在のパスワード');
+	define ('STR_NEW_PASSWORD1', '新しいパスワード');
+	define ('STR_NEW_PASSWORD2', '新しいパスワード（再入力）');
+	define ('STR_CHANGE',        '変更する');
+	define ('STR_SET_PASSWORD',  'パスワード設定');
+	define ('STR_LOGOUT',        'ログアウト');
+	define ('STR_MAINMENU',      'メインメニューへ戻る');
+	define ('STR_ERROR1',        '現在のパスワードが違います。');
+	define ('STR_ERROR2',        '新しいパスワードと新しいパスワード（再入力）が一致しません。');
+	define ('STR_ERROR3',        '新しいパスワードが空です。');
+	define ('STR_COMMENT',       'パスワードは40文字までの任意の半角英数字記号が使用できます。');
 } else {
-	define (STR_TITLE1,        'HACHIOJI SAKURA ACADEMY');
-	define (STR_TITLE2,        'Teacher:&nbsp;');
-	define (STR_CURRENT_PASS,  'Current password');
-	define (STR_NEW_PASSWORD1, 'New password');
-	define (STR_NEW_PASSWORD2, 'New password (retype)');
-	define (STR_CHANGE,        'Change password');
-	define (STR_SET_PASSWORD,  'Set password');
-	define (STR_LOGOUT,        'Logout');
-	define (STR_MAINMENU,      'Back to Main Menu');
-	define (STR_ERROR1,        'Current password is wrong.');
-	define (STR_ERROR2,        'New password and New password (retype) is not same.');
-	define (STR_ERROR3,        'New password is empty.');
-	define (STR_COMMENT,       'You can use any alpha numeric character (MAX 40 characters).');
+	define ('STR_TITLE1',        'HACHIOJI SAKURA ACADEMY');
+	define ('STR_TITLE2',        'Teacher:&nbsp;');
+	define ('STR_CURRENT_PASS',  'Current password');
+	define ('STR_NEW_PASSWORD1', 'New password');
+	define ('STR_NEW_PASSWORD2', 'New password (retype)');
+	define ('STR_CHANGE',        'Change password');
+	define ('STR_SET_PASSWORD',  'Set password');
+	define ('STR_LOGOUT',        'Logout');
+	define ('STR_MAINMENU',      'Back to Main Menu');
+	define ('STR_ERROR1',        'Current password is wrong.');
+	define ('STR_ERROR2',        'New password and New password (retype) is not same.');
+	define ('STR_ERROR3',        'New password is empty.');
+	define ('STR_COMMENT',       'You can use any alpha numeric character (MAX 40 characters).');
 }
 
 if (isset($_POST['add'])) {
